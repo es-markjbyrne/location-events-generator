@@ -23,12 +23,12 @@
         "latitude": {
           "_gen": "var",
           "var": "location",
-          "selectKeys": ["latitude"]
+          "path": ["latitude"]
         },
         "longitude": {
           "_gen": "var",
           "var": "location",
-          "selectKeys": ["longitude"]
+          "path": ["longitude"]
         },
         "source_event_time": { "_gen": "now" }
       },
@@ -44,6 +44,19 @@
             "var": "location",
             "path": ["duration"]
           }
+        },
+        "kafkaKeyAvroSchemaHint": {
+          "type": "string"
+        },
+        "kafkaValueAvroSchemaHint": {
+          "type": "record",
+          "name": "locationEventsValue",
+          "fields": [
+            {"type": "string", "name": "device_serial"},
+            {"type": "double", "name": "latitude"},
+            {"type": "double", "name": "longitude"},
+            {"type": "long", "name": "source_event_time"}
+          ]
         }
       }
     }

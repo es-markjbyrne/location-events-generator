@@ -1,0 +1,67 @@
+{
+  "generators": [
+    {
+      "topic": "location_events",
+      "varsOnce": {
+        "device_serial": { "_gen": "uuid" }
+      },
+      "vars": {
+        "location": {
+          "_gen": "waypoints",
+          "waypoints": {
+            "_gen": "loadJsonFile",
+            "file": "home/waypoints.json"
+          },
+          "speed": 25,
+          "scale": 0.025,
+          "unit": "degrees"
+        }
+      },
+      "key": { "_gen": "var", "var": "device_serial" },
+      "value": {
+        "device_serial": { "_gen": "var", "var": "device_serial" },
+        "latitude": {
+          "_gen": "var",
+          "var": "location",
+          "selectKeys": ["latitude"]
+        },
+        "longitude": {
+          "_gen": "var",
+          "var": "location",
+          "selectKeys": ["longitude"]
+        },
+        "source_event_time": { "_gen": "now" }
+      },
+      "localConfigs": {
+        "maxEvents": {
+          "_gen": "var",
+          "var": "location",
+          "path": ["points"]
+        },
+        "throttle": {
+          "ms": {
+            "_gen": "var",
+            "var": "location",
+            "path": ["duration"]
+          }
+        }
+      }
+    }
+  ],
+  "connections": {
+    "local-kafka": {
+      "kind": "kafka",
+      "topicPolicy": {
+        "policy": "dropAndCreate",
+        "partitions": 1,
+        "replicationFactor": 1
+      },
+      "producerConfigs": {
+        "bootstrap.servers": "http://localhost:9092",
+        "schema.registry.url": "http://localhost:8081",
+        "key.serializer": "org.apache.kafka.common.serialization.StringSerializer",
+        "value.serializer": "io.confluent.kafka.serializers.KafkaAvroSerializer"
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+docker run --env-file $(pwd)/license.env \
+-v $(pwd)/generators/location-events/generator.json:/home/generator.json \
+-v $(pwd)/generators/location-events/waypoints.json:/home/waypoints.json \
+shadowtraffic/shadowtraffic:latest \
+--config /home/generator.json \
+--watch \
+--sample 5 \
+--stdout
